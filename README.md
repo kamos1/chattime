@@ -1,68 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Chat Time
 
-## Available Scripts
+This is a real-time messaging app, bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-In the project directory, you can run:
+To get started follow these steps:
 
-### `npm start`
+1. Clone this repo
+2. [Clone this server repo](). The server is needed to get the app fully up and running
+3. Once cloned, npm install or yarn add
+4. yarn start or npm start to fire up the app
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## The Basics
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+For the frontend I went with React. There are 5 components including the app that make up Chat Time.
 
-### `npm test`
+- Display.js: This is a stateless component that acts as a holding place for displaying all of the messages. It's responsibility is to take the messages passed down as a prop called messagess and render a message component for each message in the messages array.
+- Message.js: This is a stateless component that takes in two props, name and message and returns a message component. It is used in Display.js.
+- MessageInput.js: This is a stateful component that handles the user's name and message. There are three input elements that make up this component.
+- TypingNotification.js: This is stateless component that accepts one prop, `isTyping` and based on this prop a div will display notifiying the users that someone is typing.
+- App.js: This is a stateful component that is responsible for maintaing all of the messages and knowing when someone is typing. App has a function called `whatToDisplay`. It helps with properly displaying the TypingNofitication component.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I chose to make each of these components in an attempt to one, make sure nothing was doing anything more than it needed to and two, to keep the JSX fairly readable.
 
-### `npm run build`
+## Fun Stuff
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Messaging apps are supposed to be quick so I decided to implement websockets, with `socket.io-client`. There are several events that are triggered from the frontend and several events being listened for on the frontend.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- MessageInput.js: There are three events that are triggered
+  - `submitMessage` is emitted to the server when the submit button is clicked with a payload that contains the name of the sender and the text of that message.
+  - `typing` is emitted when a user begins typing in the input for the message and has a payload that contains the name of the user typing.
+  - `noTyping` is emitted when a user stops typing in the input for the message and contains no payload.
+- App.js: There are three events that are being listened for in App.js
+  - `receiveMessage` lets app know that a user has submitted a message and we need to add it to the messages array.
+  - `typing` and `noTyping` lets app know that someone is and isn't typing. Based on which event app hears `isTyping` to true or false. `isTyping` is then passed down to the TypingNotification component as a prop and depending on is value you'll see the TypingNotification display or not.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Testing
 
-### `npm run eject`
+For testing I went with react-test-render. Each component has a test to make sure it is rendering the correct information.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Wishlist
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Fix the wonkiness with the TypingNotification because it appears and disappears too quickly.
+- Saving the messages to localStorage so they persist through a refresh of the page.
+- Add react-router so there can be a sort of create username component that displays the first time you load the application. This would remove the name input from the MessageInput component. Now you can freely change your name mid conversation.
+- Add a component to display who is in the chat room
+- Add some mocking for the websocket events
+- Add some much needed styling
