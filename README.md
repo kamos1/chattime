@@ -5,7 +5,7 @@ This is a real-time messaging app, bootstrapped with [Create React App](https://
 To get started follow these steps:
 
 1. Clone this repo
-2. [Clone this server repo](). The server is needed to get the app fully up and running
+2. [Clone this server repo](https://github.com/kamos1/chattime-server). The server is needed to get the app fully up and running
 3. Once cloned, npm install or yarn add
 4. yarn start or npm start to fire up the app
 
